@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>CSCI5308 Group Formation Tool - Login page</title>
+    <!-- Normalize.css by Nicolas Gallagher, used from https://necolas.github.io/normalize.css/
+    Necessary to reset some default browser styles for consistent appearance across browsers. -->
+    <link th:href="@{/styles/cssandjs/normalize.css}" rel="stylesheet"/>
+
+    <!-- This file includes all default styles for this application. -->
+    <link th:href="@{/styles/cssandjs/main.css}" rel="stylesheet"/>
+</head>
+<body class="bodyGridContainer">
+<header class="bodyGridRow headerGridContainer">
+    <h1>CSCI5308 Group Formation Tool</h1>
+</header>
+
+  <div class="mainGridCentreInfoBox" th:if="${errorMessage}">
+        <h3 class="errorInfo" th:text="${errorMessage}"></h3>
+    </div>
+
+<main class="bodyGridRow mainGridContainer">
+    <aside class="mainGridRow welcomeInfoBox">
+        <h2>Welcome to the group formation tool, please Fill the below options.</h2>
+    </aside>
+
+
+    <div class="mainGridCentreCard"  th:if="${question}">
+        <form class="regnLoginGridContainer" th:action="@{/questiontype}" th:object="${question}" method="post">
+            <label class="regnLoginGridLeftCol" for="lTitle"> Title:</label>
+            <input class="regnLoginGridRightCol" type="text" th:field="${question.title}" required/>
+            <label class="regnLoginGridLeftCol" for="lQuestion"> Question:</label>
+            <input class="regnLoginGridRightCol" type="text" th:field="${question.text}" required/>
+            <label class="regnLoginGridLeftCol" for="lType"> Type:</label>
+            <select class="regnLoginGridRightCol" th:field="${question.type}">
+                <option value="0">select type</option>
+                <option th:each="que : ${questions}" th:value="${que}" th:text="${que}"></option>
+            </select>
+            <input class="regnLoginGridRightCol" type="submit" value="submit"/>
+        </form>
+    </div>
+</main>
+<footer class="bodyGridRow footerGridContainer">
+    <p><strong>CSCI5308 (Advanced Topics in Software Development)</strong> is a graduate course offered for students
+        enrolled in the <a href="https://www.dal.ca/macs" target="_blank">Master of Applied Computer Science (MACS)</a>
+        at the <a href="https://www.dal.ca/cs" target="_blank">Faculty of Computer Science</a>, <a
+                href="https://www.dal.ca" target="_blank">Dalhousie University</a>.</p>
+</footer>
+</body>
+</html>

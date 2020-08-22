@@ -1,0 +1,10 @@
+/* 
+ * @file: errorstyles.css
+ * @desc: This file includes custom styles only for HTML elements on error.html
+ */
+
+table td {
+    vertical-align: top;
+    border: solid 1px #888;
+    padding: 10px;
+}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="https://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+>
+<head>
+    <title>CSCI5308 - Group Formation Tool</title>
+</head>
+<body>
+<!-- I got the idea for how to do this from https://www.thymeleaf.org/doc/articles/springsecurity.html -->
+<div sec:authorize="isAuthenticated()">
+    <h4 th:inline="text">BannerID: [[${#httpServletRequest.remoteUser}]]</h4>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
+</div>
+<h1>Course Administration Page</h1>
+
+    <div class="mainGridCentreInfoBox" th:if="${errorMessage}">
+        <h3 class="errorInfo" th:text="${errorMessage}"></h3>
+    </div>
+<div>
+    <table>
+        <tr th:each="course : ${courses}">
+            <td><a th:href="@{/course/course(id=${course.id})}" th:text="${course.title}">Title</a></td>
+            <td><a th:href="@{/admin/assigninstructor(id=${course.id})}">Assign Instructor</a>
+            <td><a th:href="@{/admin/deletecourse(id=${course.id})}">Delete</a></td>
+        </tr>
+    </table>
+</div>
+<div>
+    <h4>Create a new course:</h4>
+    <form th:action="@{/admin/createcourse}" method="post">
+        <div><label> Title : <input type="text" name="title"/> </label></div>
+        <div><input type="submit" value="Create Course"/></div>
+    </form>
+</div>
+</body>
+</html>

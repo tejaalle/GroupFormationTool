@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>CSCI5308 Group Formation Tool - Signup page</title>
+    <!-- Normalize.css by Nicolas Gallagher, used from https://necolas.github.io/normalize.css/
+    Necessary to reset some default browser styles for consistent appearance across browsers. -->
+    <link th:href="@{/styles/cssandjs/normalize.css}" rel="stylesheet"/>
+
+    <!-- This file includes all default styles for this application. -->
+    <link th:href="@{/styles/cssandjs/main.css}" rel="stylesheet"/>
+</head>
+<body class="bodyGridContainer">
+<header class="bodyGridRow headerGridContainer">
+    <h1>CSCI5308 Group Formation Tool</h1>
+</header>
+<main class="bodyGridRow mainGridContainer">
+    <aside class="mainGridRow welcomeInfoBox">
+        <h2>Welcome to the group formation tool, please enter your information:</h2>
+    </aside>
+
+    <div class="mainGridCentreInfoBox" th:if="${errorMessage}">
+        <h3 class="errorInfo" th:text="${errorMessage}"></h3>
+    </div>
+    <div class="mainGridCentreCard">
+        <form class="regnLoginGridContainer" th:action="@{/signup}" method="post">
+            <label class="regnLoginGridLeftCol" for="sBannerInput">Banner ID:</label><input id="sBannerInput"
+                                                                                            class="regnLoginGridRightCol"
+                                                                                            type="text"
+                                                                                            name="username"/>
+            <label class="regnLoginGridLeftCol" for="sPswdInput">Password:</label><input id="sPswdInput"
+                                                                                         class="regnLoginGridRightCol"
+                                                                                         type="password"
+                                                                                         name="password"/>
+            <label class="regnLoginGridLeftCol" for="sPswdConfirmInput">Password (Confirmation):</label><input
+                id="sPswdConfirmInput" class="regnLoginGridRightCol" type="password" name="passwordConfirmation"/>
+            <label class="regnLoginGridLeftCol" for="sFNameInput">First Name:</label><input id="sFNameInput"
+                                                                                            class="regnLoginGridRightCol"
+                                                                                            type="text"
+                                                                                            name="firstName"/>
+            <label class="regnLoginGridLeftCol" for="sLNameInput">Last Name:</label><input id="sLNameInput"
+                                                                                           class="regnLoginGridRightCol"
+                                                                                           type="text" name="lastName"/>
+            <label class="regnLoginGridLeftCol" for="sEmailInput">Email:</label><input id="sEmailInput"
+                                                                                       class="regnLoginGridRightCol"
+                                                                                       type="text" name="email"/>
+            <input class="regnLoginGridRightCol" type="submit" value="Create Account"/>
+        </form>
+    </div>
+    <a class="signupLogin mainGridRow mainGridCentreCard" th:href="@{/login}">Are you an existing user? Click here to
+        log in!</a>
+</main>
+<footer class="bodyGridRow footerGridContainer">
+    <p><strong>CSCI5308 (Advanced Topics in Software Development)</strong> is a graduate course offered for students
+        enrolled in the <a href="https://www.dal.ca/macs" target="_blank">Master of Applied Computer Science (MACS)</a>
+        at the <a href="https://www.dal.ca/cs" target="_blank">Faculty of Computer Science</a>, <a
+                href="https://www.dal.ca" target="_blank">Dalhousie University</a>.</p>
+</footer>
+</body>
+</html>

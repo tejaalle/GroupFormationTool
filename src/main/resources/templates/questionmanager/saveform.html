@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>CSCI5308 Group Formation Tool - Login page</title>
+    <!-- Normalize.css by Nicolas Gallagher, used from https://necolas.github.io/normalize.css/
+    Necessary to reset some default browser styles for consistent appearance across browsers. -->
+    <link th:href="@{/styles/cssandjs/normalize.css}" rel="stylesheet"/>
+
+    <!-- This file includes all default styles for this application. -->
+    <link th:href="@{/styles/cssandjs/main.css}" rel="stylesheet"/>
+</head>
+<body class="bodyGridContainer">
+<header class="bodyGridRow headerGridContainer">
+    <h1>CSCI5308 Group Formation Tool</h1>
+</header>
+<main class="bodyGridRow mainGridContainer">
+    <aside class="mainGridRow welcomeInfoBox">
+
+        <h1>Your Question has been saved</h1>
+        <h3>Your question will be displayed as below</h3>
+    </aside>
+
+  <div class="mainGridCentreInfoBox" th:if="${errorMessage}">
+        <h3 class="errorInfo" th:text="${errorMessage}"></h3>
+   </div>
+    
+    <div class="mainGridCentreCard" th:if="${question}">
+        <div th:switch="${question.type}">
+            <div th:case="'mcq-multiple'">
+                <form th:action="@{/}" method="get">
+                    <label th:text="${question.text}"> </label> <br>
+                    <th:block th:each="opt : ${question.optionsList}">
+                        <input type="checkbox" name="${opt.options}" th:value="${opt.options}"/>
+                        <label th:text="${opt.options}"></label>
+                        <br>
+                    </th:block>
+                    <input type="submit" value="Go to Home"/>
+                </form>
+            </div>
+            <div th:case="'mcq-one'">
+                <form class="freeGridContainer" th:action="@{/}" method="get">
+                    <label th:text="${question.text}"> </label>
+                    <label>
+                        <select name="selectoptions">
+                            <th:block th:each="opt : ${question.optionsList}">
+                                <option th:value="${opt.options}" th:text="${opt.options}">
+                                </option>
+                            </th:block>
+                        </select>
+                    </label>
+                    <input type="submit" value="Go to Home"/>
+                </form>
+            </div>
+            <div th:case="'freetext'">
+                <form class="freeGridContainer" th:action="@{/}" method="get">
+                    <label th:text="${question.text}"> </label>
+                    <label>
+                        <input type="text" name="text">
+                    </label>
+                    <input type="submit" value="Go to Home"/>
+                </form>
+            </div>
+            <div th:case="'numeric'">
+                <form class="regnLoginGridContainer" th:action="@{/}" method="get">
+                    <label class="regnLoginGridLeftCol" th:text="${question.text}"> </label>
+                    <input class="regnLoginGridRightCol" type="number" name="title"/>
+                    <input class="regnLoginGridRightCol" type="submit" value="Go to Home"/>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+<footer class="bodyGridRow footerGridContainer">
+    <p><strong>CSCI5308 (Advanced Topics in Software Development)</strong> is a graduate course offered for students
+        enrolled in the <a href="https://www.dal.ca/macs" target="_blank">Master of Applied Computer Science (MACS)</a>
+        at the <a href="https://www.dal.ca/cs" target="_blank">Faculty of Computer Science</a>, <a
+                href="https://www.dal.ca" target="_blank">Dalhousie University</a>.</p>
+</footer>
+</body>
+</html>

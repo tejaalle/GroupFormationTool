@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>CSCI5308 Group Formation Tool - Login page</title>
+    <!-- Normalize.css by Nicolas Gallagher, used from https://necolas.github.io/normalize.css/
+    Necessary to reset some default browser styles for consistent appearance across browsers. -->
+    <link th:href="@{/styles/cssandjs/normalize.css}" rel="stylesheet"/>
+
+    <!-- This file includes all default styles for this application. -->
+    <link th:href="@{/styles/cssandjs/main.css}" rel="stylesheet"/>
+</head>
+<body class="bodyGridContainer">
+<header class="bodyGridRow headerGridContainer">
+    <h1>CSCI5308 Group Formation Tool</h1>
+</header>
+<main class="bodyGridRow mainGridContainer">
+    <aside class="mainGridRow welcomeInfoBox">
+        <h2>Welcome to the group formation tool, please enter token sent to Email</h2>
+    </aside>
+
+    <div class="mainGridCentreInfoBox" th:if="${confirmationMessage}">
+        <p class="errorInfo" th:text=${confirmationMessage}></p>
+    </div>
+    <div class="mainGridCentreInfoBox" th:if="${confirmationMessageSuccess}">
+        <p class="confirmation" th:text=${confirmationMessageSuccess}></p>
+    </div>
+       <div class="mainGridCentreInfoBox" th:if="${errorMessage}">
+        <h3 class="errorInfo" th:text="${errorMessage}"></h3>
+    </div>
+    <div class="mainGridCentreCard">
+        <form class="regnLoginGridContainer" th:action="@{'/password/confirmpassword'}" th:method="post">
+            <label class="regnLoginGridLeftCol" for="uname"><b>Enter token </b></label>
+            <input class="regnLoginGridRightCol" type="text" placeholder="Enter token" id="username" name="username"
+                   required>
+
+            <label class="regnLoginGridLeftCol" for="psw"><b>Enter New Password</b></label>
+            <input class="regnLoginGridRightCol" type="password" placeholder="Enter Password" id="password"
+                   name="password" required>
+            <input type="hidden" id="email" name="email" th:value=${EmailString} />
+            <input type="hidden" id="bannerId" name="bannerId" th:value=${banner} />
+            <input class="regnLoginGridRightCol" type="submit" value="Submit"/>
+        </form>
+
+    </div>
+    <a class="signupLogin mainGridRow mainGridCentreCard" th:href="@{/login}"> Go to Login Page!</a>
+</main>
+<footer class="bodyGridRow footerGridContainer">
+    <p><strong>CSCI5308 (Advanced Topics in Software Development)</strong> is a graduate course offered for students
+        enrolled in the <a href="https://www.dal.ca/macs" target="_blank">Master of Applied Computer Science (MACS)</a>
+        at the <a href="https://www.dal.ca/cs" target="_blank">Faculty of Computer Science</a>, <a
+                href="https://www.dal.ca" target="_blank">Dalhousie University</a>.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="https://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+>
+<head>
+    <title>CSCI5308 - Group Formation Tool</title>
+</head>
+<body>
+
+  <div class="mainGridCentreInfoBox" th:if="${errorMessage}">
+        <h3 class="errorInfo" th:text="${errorMessage}"></h3>
+    </div>
+    
+<!-- I got the idea for how to do this from https://www.thymeleaf.org/doc/articles/springsecurity.html -->
+<div sec:authorize="isAuthenticated()">
+    <h4 th:inline="text">BannerID: [[${#httpServletRequest.remoteUser}]]</h4>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
+</div>
+<div  th:if="${course}">
+<h1 th:text="'Course: ' + ${course.title}">Course: Title Not Found</h1>
+</div>
+<div th:if="${instructor}">
+    <br/>
+    <a th:href="@{/course/instructoradmin(id=${course.id})}">Course Administration</a>
+    <br/>
+    <a th:href="@{/questionmanager/instructorquestions(id=${user.id},courseid=${course.id})}">Question Manager Page</a>
+    <br/>
+    <a th:href="@{/questionsurvey/coursequestions/createsurvey(courseid=${course.id})}">Create Survey</a>
+    <br/>
+    <a th:href="@{/groupcriteria/createcriteria(courseid=${course.id})}">Create Criteria</a>
+    <br/>
+    <a th:href="@{/formgroups/checkcriteria(courseid=${course.id})}">Create Groups</a>
+</div>
+<div th:if="${ta}">
+    <br/>
+    <a th:href="@{/course/instructoradmin(id=${course.id})}">Course Administration</a>
+    <br/>
+    <a th:href="@{/questionsurvey/coursequestions/createsurvey(courseid=${course.id})}">Create Survey</a>
+  </div>
+<div th:if="${student}">
+    <h1>Hello Student <label th:text="${user.lastName}"></label></h1>
+    <br/>
+    <a th:href="@{/providesurvey/questionsdisplay(courseid=${course.id})}">Attempt Survey</a></div>
+</body>
+</html>

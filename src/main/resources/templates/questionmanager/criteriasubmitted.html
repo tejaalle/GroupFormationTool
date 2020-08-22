@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<title>CSCI5308 - Group Formation Tool</title>
+</head>
+<body>
+	<div sec:authorize="isAuthenticated()">
+		<h4 th:inline="text">BannerID:
+			[[${#httpServletRequest.remoteUser}]]</h4>
+		<form th:action="@{/logout}" method="post">
+			<input type="submit" value="Sign Out" />
+		</form>
+	</div>
+	<div class="mainGridCentreInfoBox" th:if="${criterianotsubmitted}">
+	<h1>Please submit criteria to form groups</h1>
+	<br/>
+    <a th:href="@{/groupcriteria/createcriteria(courseid=${courseID})}">Create Criteria</a>
+	</div>
+	 <div class="mainGridCentreInfoBox" th:if="${criteriasubmitted}">
+        <h1>Criteria Submitted</h1>
+    </div>
+    <br>
+	<a th:href="@{/course/course(id=${courseID})}">Home</a>
+	<br>
+	</body>
+	</html>

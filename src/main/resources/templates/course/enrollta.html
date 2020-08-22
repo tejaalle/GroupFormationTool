@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="https://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+>
+<head>
+    <title>CSCI5308 - Group Formation Tool</title>
+</head>
+<body>
+    <div class="mainGridCentreInfoBox" th:if="${errorMessage}">
+        <h3 class="errorInfo" th:text="${errorMessage}"></h3>
+    </div>
+<!-- I got the idea for how to do this from https://www.thymeleaf.org/doc/articles/springsecurity.html -->
+<div sec:authorize="isAuthenticated()">
+    <h4 th:inline="text">BannerID: [[${#httpServletRequest.remoteUser}]]</h4>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
+</div>
+<h1 th:text="'Course: ' + ${course.title}">Course: Title Not Found</h1>
+<br/>
+<p>
+    This tool allows you to import and enroll students in the system by uploading a CSV
+    file (banner ID, first name, last name, email). Each student will have an account
+    created if they do not already exist in the system, and will be emailed with their
+    login credentials.
+</p>
+<br/>
+<a th:href="@{/course/enrollta(id=${course.id})}">Enroll TAs</a>
+</body>
+</html>

@@ -1,0 +1,318 @@
+/* 
+ * @file: main.css
+ * @desc: This file includes styles for the various page templates.
+ * 		  Implemented based on guidelines provided in: https://www.baeldung.com/spring-thymeleaf-css-js
+ */
+
+/* 
+ * General styles for elements in the page body.
+ */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    width: 80vw;
+    margin: auto;
+}
+
+/* 
+ * All content will have a bit of default padding to align text properly.
+ */
+p, a, h1, h2, h3, h4, h5, h6, form {
+    padding: 0 16px;
+}
+
+/*
+ * Content is organized into header, main and footer elements for consistency.
+ * These elements have default properties defined here.
+ */
+header {
+    background-color: steelblue;
+    color: white;
+    box-shadow: 0 5px 8px #888888;
+}
+
+footer {
+    margin: 2em 0 0 0;
+    padding: 1em 0 0 0;
+    border-top: thin solid lightgray;
+}
+
+/* 
+ * Main heading has a steelblue coloured background.
+ * It also has a top and bottom padding to space the content better.
+ */
+h1 {
+    margin: 0;
+    padding-bottom: 1em;
+    padding-top: 1em;
+}
+
+/*
+ * Some default styling for form input elements.
+ */
+form input {
+    margin: 1em 0;
+    height: 40px;
+}
+
+form input[type="submit"] {
+    background-color: skyblue;
+}
+
+form input[type="submit"]:hover {
+    background-color: steelblue;
+    color: yellow;
+}
+
+/*
+ * Default styles for footer text and links.
+ */
+footer p {
+    font-size: 0.9em;
+}
+
+footer a, footer a:link, footer a:visited {
+    text-decoration: none;
+    color: steelblue;
+    padding: 0;
+}
+
+footer a:hover {
+    color: darkgoldenrod;
+    border-bottom: thin solid darkgoldenrod;
+}
+
+/*
+ * Custom styles for displaying key information.
+ */
+.errorInfo {
+    color: red;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.confirmation {
+    color: teal;
+    font-style: italic;
+    font-weight: bold;
+}
+
+a.signupLogin, a.signupLogin:link, a.signupLogin:visited {
+    display: block;
+    color: steelblue;
+    border: thin solid gold;
+    margin: 2em 0;
+    padding: 2em 0;
+    text-decoration: none;
+    text-align: center;
+    font-weight: bold;
+}
+
+a.signupLogin:hover {
+    background-color: steelblue;
+    color: yellow;
+}
+
+a.signupLogin:active {
+    background-color: steelblue;
+    color: yellow;
+}
+
+/*
+ * Custom class for an aside block to show information below the page header.
+ */
+.welcomeInfoBox {
+    text-align: center;
+}
+
+/*
+ * UI Update: Grid layout
+ * -> The page body is a grid with 4 rows (header, user profile div, main, footer)
+ * -> The user profile div is a 4 column grid
+ * -> The main is another grid with 3 columns (for content alignment)
+ * -> The header and footer are also set up as grid containers to align content in the vertical middle.
+ */
+.bodyGridContainer {
+    display: grid;
+    gap: 1em;
+}
+
+.bodyGridRow {
+    grid-column: 1/-1;
+}
+
+
+.headerGridContainer {
+    grid-row: 1;
+    height: 120px;
+    display: grid;
+    align-items: center;
+}
+
+.headerGridRow {
+    grid-column: 1/-1;
+}
+
+
+.userProfileGridContainer {
+    grid-row: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: auto;
+}
+
+.userProfileGridCol1 {
+    grid-column: 1/2;
+}
+
+.userProfileGridCol2 {
+    grid-column: 2/3;
+}
+
+.userProfileGridCol3 {
+    grid-column: -3/-2;
+}
+
+.userProfileGridCol4 {
+    grid-column: -2/-1;
+    padding: 0;
+    margin: 0;
+}
+
+.userProfileGridCol4 input[type="submit"] {
+    width: 100%;
+}
+
+
+.mainGridContainer {
+    grid-row: 3;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 20px;
+}
+
+.mainGridRow {
+    grid-column: 1/-1;
+}
+
+.mainGridCentreCard {
+    grid-column: 2/3;
+    background-color: #FAFAFA;
+}
+
+.mainGridCentreInfoBox {
+    grid-column: 2/3;
+}
+
+
+.footerGridContainer {
+    grid-row: 4;
+    height: 120px;
+    display: grid;
+    align-items: center;
+}
+
+.footerGridRow {
+    grid-row: -2/-1;
+}
+
+/*
+ * Styles for the containers holding login and registration forms
+ */
+.regnLoginGridContainer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+}
+
+.regnLoginGridLeftCol {
+    grid-column: 1/2;
+}
+
+.regnLoginGridRightCol {
+    grid-column: 2/-1;
+}
+
+/*
+ * Styles for the containers holding MC forms
+ */
+.McGridContainer {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    align-items: center;
+}
+
+.McGridCol1 {
+    grid-column: 1/2;
+}
+
+.McGridCol2 {
+    grid-column: 2/2;
+}
+
+.McGridCol3 {
+    grid-column: 4/-2;
+}
+
+.McGridCol4 {
+    grid-column: 4/-1;
+}
+
+/*
+ * Styles for the containers holding freetest forms
+ */
+.freeGridContainer {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    align-items: center;
+}
+
+
+/*
+ * Media queries for responsive behaviour
+ */
+
+@media screen and (max-width: 900px) {
+    body {
+        width: 100%;
+    }
+
+    .headerGridContainer {
+        align-items: center;
+        justify-content: center;
+    }
+
+    .userProfileGridContainer {
+        display: grid;
+        align-items: center;
+        justify-content: center;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+    }
+
+    .userProfileGridCol1 {
+        text-align: center;
+        grid-row: 1;
+        margin: 0;
+        padding: 0;
+    }
+
+    .userProfileGridCol4 {
+        grid-row: 2;
+        margin: 0;
+        padding: 0;
+    }
+
+    .userProfileGridCol4 input[type="submit"] {
+        width: 100%;
+    }
+
+    .mainGridCentreCard {
+        grid-column: 1/-1;
+        background-color: #FAFAFA;
+    }
+
+    .mainGridCentreInfoBox {
+        grid-column: 1/-1;
+        text-align: center;
+    }
+}

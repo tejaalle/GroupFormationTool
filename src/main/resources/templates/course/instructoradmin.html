@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="https://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+>
+<head>
+    <title>CSCI5308 - Group Formation Tool</title>
+</head>
+<body>
+<div class="mainGridCentreInfoBox" th:if="${errorMessage}">
+        <h3 class="errorInfo" th:text="${errorMessage}"></h3>
+    </div>
+<!-- I got the idea for how to do this from https://www.thymeleaf.org/doc/articles/springsecurity.html -->
+<div sec:authorize="isAuthenticated()">
+    <h4 th:inline="text">BannerID: [[${#httpServletRequest.remoteUser}]]</h4>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
+</div>
+<div  th:if="${course}">
+<h1 th:text="'Course: ' + ${course.title}">Course: Title Not Found</h1>
+</div>
+<br/>
+<div th:if="${displayresults}">
+    <h3>Results of previous import:</h3>
+    <br/>
+    <div th:if="${successful}">
+        <h4>Successful</h4>
+        <br/>
+        <table>
+            <tr th:each="msg : ${successful}">
+                <td>
+                    <span th:text="${msg}"></span>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div th:if="${failures}">
+        <h4>Failures</h4>
+        <br/>
+        <table>
+            <tr th:each="msg : ${failures}">
+                <td>
+                    <span th:text="${msg}"></span>
+                </td>
+            </tr>
+        </table>
+        <br/>
+    </div>
+</div>
+<p>
+    This tool allows you to import and enroll students in the system by uploading a CSV
+    file (banner ID, first name, last name, email). Each student will have an account
+    created if they do not already exist in the system, and will be emailed with their
+    login credentials.
+</p>
+<div  th:if="${course}">
+<form th:action="@{/course/uploadcsv(id=${course.id})}" method="post" enctype="multipart/form-data">
+    <label>File to upload:</label>
+    <input type="file" name="file">
+    <button type="submit">Upload CSV File</button>
+</form>
+</div>
+<br/>
+<div  th:if="${course}">
+<a th:href="@{/course/enrollta(id=${course.id})}">Enroll TAs</a>
+</div>
+</body>
+</html>

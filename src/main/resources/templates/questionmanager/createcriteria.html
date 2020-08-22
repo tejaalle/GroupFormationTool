@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<title>CSCI5308 - Group Formation Tool</title>
+</head>
+<body>
+	<div sec:authorize="isAuthenticated()">
+		<h4 th:inline="text">BannerID:
+			[[${#httpServletRequest.remoteUser}]]</h4>
+		<form th:action="@{/logout}" method="post">
+			<input type="submit" value="Sign Out" />
+		</form>
+	</div>
+	<a th:href="@{/course/course(id=${courseID})}">Home</a>
+	<br>
+	<form onsubmit="return confirm('Do you really want to Submit?')" th:action="@{/groupcriteria/submitcriteria(courseid=${courseID})}"  th:object="${questions}" method="post">
+	<div class="container py-5">
+		<div class="row">
+			<ol th:each="question, i : *{questionsList}">
+				<li>
+				    <input  type="hidden" th:field="*{questionsList[__${i.index}__].ID}" th:value="${question.ID}" name="ID">
+				    <div>
+					<h2 th:text="${i.index + 1} + '. ' + ${question.text}" th:value="${question.text}"></h2>
+					</div>
+						<label> <select th:field="*{questionsList[__${i.index}__].criteria}">
+								<option th:each="type : ${criteriaTypes}"
+									th:value="${type.toString().toUpperCase()}" th:text="${type}">
+								</option>
+						</select>
+					</label>
+				</li>
+			</ol>
+		</div>
+	</div>
+	<input type="submit" value="Submit">
+	</form>
+</body>
+</html>
+

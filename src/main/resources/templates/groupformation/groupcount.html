@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="https://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+>
+<head>
+    <title>CSCI5308 - Group Formation Tool</title>
+    <link th:href="@{/styles/cssandjs/groupcount.css}" rel="stylesheet"/>
+</head>
+<body>
+    <div class="mainGridCentreInfoBox" th:if="${errorMessage}">
+        <h3 class="errorInfo" th:text="${errorMessage}"></h3>
+    </div>
+<!-- I got the idea for how to do this from https://www.thymeleaf.org/doc/articles/springsecurity.html -->
+<div sec:authorize="isAuthenticated()">
+    <h4 th:inline="text">BannerID: [[${#httpServletRequest.remoteUser}]]</h4>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
+</div>
+<a th:href="@{/course/course(id=${courseID})}">Home</a><br>
+<form th:action="@{/formgroups/generategroups}"  method="post">
+   <div th:if= "${students.size()>1}">
+   <input type="hidden" th:value = "${courseID}" th:name= "courseid"></input>
+   <br>
+   <label>Enter the Group count and submit to form the groups:  </label>
+   <input type="number" th:name= "groupCount"></input>
+   <br>
+  <input type="submit" value="Submit">
+  </div>
+  <div th:if= "${students.size()<2}">
+   <h1>You can not form Groups because Number of students attempted the survey is less than 2  </h1>
+   
+  </div>
+</form>
+<div class="button-container">
+    <h1>Click on the student Id to see there answers to the Survey questions</h1>
+    <form >
+     <div>
+     <h2>Below are the students who answered the survey</h2>
+        <ol  style="list-style: none;">
+        <li>
+           <table>
+             <tr>
+               <th style="padding:0 15px 0 15px;">BannerID</th>
+               <th style="padding:0 15px 0 15px;">Last Name</th>
+               <th style="padding:0 15px 0 15px;">Email</th>
+             </tr>
+             <tr th:each="student : ${students}">
+                <td style="padding:0 15px 0 15px;"><a th:href="@{'/formgroups/showquestions?courseID=' + ${courseID}+'&studentId='+ ${student.id}}"><label th:text="${student.bannerID}"></label></a></td>
+                <td style="padding:0 15px 0 15px;" th:text="${student.lastName}"></td>
+                <td  style="padding:0 15px 0 15px;" th:text="${student.email}"></td>
+             </tr>
+           </table>
+         <li>  
+             
+        </ol>
+      </div>  
+    </form>
+
+    <form >
+        <div th:if="${questions.size()}">
+            <ol  style="list-style: none;">
+        <li>
+           <table>
+             <tr>
+               <th style="padding:0 15px 0 15px;">Question Title</th>
+               <th style="padding:0 15px 0 15px;">Question</th>
+               <th style="padding:0 15px 0 15px;">Answer</th>
+             </tr>
+             <tr th:each="question, i : ${questions}">
+                <td style="padding:0 15px 0 15px;" th:text="${question.title}"></td>
+                <td style="padding:0 15px 0 15px;" th:text="${question.text}"></td>
+                <td  style="padding:0 15px 0 15px;" th:text="${question.answer}"></td>
+             </tr>
+           </table>
+         <li>  
+             
+        </ol>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

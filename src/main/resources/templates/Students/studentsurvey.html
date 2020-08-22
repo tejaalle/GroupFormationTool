@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <title>CSCI5308 - Group Formation Tool</title>
+</head>
+<body>
+<div sec:authorize="isAuthenticated()">
+    <h4 th:inline="text">BannerID: [[${#httpServletRequest.remoteUser}]]</h4>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
+</div>
+<a th:href="@{/course/course(id=${courseID})}">Home</a><br>
+<form onsubmit="return confirm('Do you really want to Submit?')" th:action="@{/providesurvey/savesurvey}"  th:object="${questionList}" method="post">
+<input type="hidden" th:value = "${courseID}" th:name= "courseid">
+<div class="container py-5">
+    <div class="row">
+        <ol th:each="question, i : *{questionsList}" style="list-style: none;">
+            <li>
+                <div th:switch="${question.type}" th:id="'Q' + ${i.index}" >
+                    <label> Question Text:</label><h3 th:text="${question.text}"  th:value="${question.text}"></h3>
+                    <div th:case="'mcq-multiple'">
+                      
+                            <th:block th:each="opt,j : ${question.optionsList}">
+                                <input type="checkbox" th:field="*{questionsList[__${i.index}__].answer}" th:value="${opt.options}"/>
+                                <label th:text="${opt.options}"></label>
+                                <br>
+                            </th:block>
+                       
+                    </div>
+                    <div th:case="'mcq-one'">
+                       
+                            <label>
+                                <select name="selectoptions" th:field="*{questionsList[__${i.index}__].answer}">
+                                    <th:block th:each="opt ,j: ${question.optionsList}">
+                                        <option   th:value="${opt.options}" th:text="${opt.options}">
+                                        </option>
+                                    </th:block>
+                                </select>
+                            </label>
+                      
+                    </div>
+                    <div th:case="'freetext'">
+                       
+                            <div>
+                                <label>
+                                    <input th:field="*{questionsList[__${i.index}__].answer}" type="text" name="text">
+                                </label>
+                            </div>
+                      
+                    </div>
+                    <div th:case="'numeric'">
+                        
+                            <div>
+                                <label>
+                                    <input th:field="*{questionsList[__${i.index}__].answer}"  type="number" name="numeric">
+                                </label>
+                            </div>
+                       
+                    </div>
+                </div>
+                <br>
+                    <input  type="hidden" th:field="*{questionsList[__${i.index}__].ID}" th:value="${question.ID}" name="ID">
+                   
+           
+                <hr>
+            </li>
+        </ol>
+    </div>
+</div>
+ <input type="submit" value="Submit">
+     </form>
+<script th:src="@{/styles/cssandjs/details.js}"></script>
+
+</body>
+</html>
+

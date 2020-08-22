@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="https://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+>
+<head>
+    <title>CSCI5308 - Group Formation Tool</title>
+</head>
+<body>
+<!-- I got the idea for how to do this from https://www.thymeleaf.org/doc/articles/springsecurity.html -->
+<div sec:authorize="isAuthenticated()">
+    <h4 th:inline="text">BannerID: [[${#httpServletRequest.remoteUser}]]</h4>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
+    
+      <div class="mainGridCentreInfoBox" th:if="${errorMessage}">
+        <h3 class="errorInfo" th:text="${errorMessage}"></h3>
+    </div>
+</div>
+<h1 th:text="'Choose from these users to assign as the instructor for ' + ${course.title} + ':'">
+    Choose from these users to assign as the instructor:
+</h1>
+<form th:action="@{/admin/assigninstructor(id=${course.id})}" method="post">
+    <div>
+        <table>
+            <tr th:each="user : ${users}">
+                <td>
+                    <input type="checkbox" name="instructor" th:value="${user.id}">
+                    <label th:text="${user.banner} + ', ' + ${user.firstName} + ' ' + ${user.lastName}"></label>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <input type="submit" value="Assign Instructors"/>
+</form>
+</body>
+</html>

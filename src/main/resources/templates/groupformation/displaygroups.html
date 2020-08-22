@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="https://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+>
+<head>
+    <title>CSCI5308 - Group Formation Tool</title>
+</head>
+<body>
+    <div class="mainGridCentreInfoBox" th:if="${errorMessage}">
+        <h3 class="errorInfo" th:text="${errorMessage}"></h3>
+    </div>
+<!-- I got the idea for how to do this from https://www.thymeleaf.org/doc/articles/springsecurity.html -->
+<div sec:authorize="isAuthenticated()">
+    <h4 th:inline="text">BannerID: [[${#httpServletRequest.remoteUser}]]</h4>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
+</div>
+<br>
+<a th:href="@{/course/course(id=${courseID})}">Home</a><br>
+
+<form >
+   <div class="container py-5">
+    <div class="row">
+    <h1>Groups are divided. Below are team members and their details</h1>
+        <ol th:each="students, i : ${studentsList}" style="list-style: none;">
+            <li>
+            <h1>Group<label th:text="${i.index}+1"></label></h1>
+               <table>
+               
+      <tr>
+        <th style="padding:0 15px 0 15px;">BannerID</th>
+        <th style="padding:0 15px 0 15px;">Last Name</th>
+        <th style="padding:0 15px 0 15px;">Email</th>
+      </tr>
+      <tr th:each="student : ${students}">
+        <td style="padding:0 15px 0 15px;" th:text="${student.bannerID}"></td>
+        <td style="padding:0 15px 0 15px;" th:text="${student.lastName}"></td>
+        <td  style="padding:0 15px 0 15px;" th:text="${student.email}"></td>
+      </tr>
+    </table>
+  
+            </li>
+        </ol>
+    </div>
+</div>
+   
+
+</form>
+</body>
+</html>

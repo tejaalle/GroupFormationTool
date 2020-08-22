@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <title>CSCI5308 - Group Formation Tool</title>
+</head>
+<body>
+<div sec:authorize="isAuthenticated()">
+    <h4 th:inline="text">BannerID: [[${#httpServletRequest.remoteUser}]]</h4>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
+</div>
+<h1 th:text="'user: ' + ${UserID}"></h1>
+<a th:href="@{/course/course(id=${courseID})}">Home</a><br>
+<a th:href="@{/generatequestion(id=${courseID})}">Create New Questions</a>
+
+
+<form th:action="@{/questionmanager/instructorquestions/sortquestionbytitle(id=${UserID},courseid=${courseID})}"
+      method="post">
+    <input type="submit" value="Sort By Title">
+</form>
+
+<form th:action="@{/questionmanager/instructorquestions/sortquestionbydate(id=${UserID},courseid=${courseID})}"
+      method="post">
+    <input type="submit" value="Sort By Date">
+</form>
+
+<div class="mainGridCentreInfoBox" th:if="${errorMessage}">
+        <h3 class="errorInfo" th:text="${errorMessage}"></h3>
+</div>
+
+<div class="container py-5">
+    <div class="row">
+        <ol th:each="question, i : ${questions}" style="list-style: none;">
+            <li>
+                <h2 th:text="${i.index + 1} + '. ' + ${question.title} + ' | Date: (' + ${question.date} + ')'"></h2>
+                <button onclick="showDetails(this.id)" th:id="${i.index}">Show Question Details</button>
+                <div th:switch="${question.type}" th:id="'Q' + ${i.index}" style="display: none">
+                    <h3 th:text="'Question Text: ' + ${question.text}"></h3>
+                    <div th:case="'mcq-multiple'">
+                        <form>
+                            <th:block th:each="opt : ${question.optionsList}">
+                                <input type="checkbox" name="${opt.options}" th:value="${opt.options}"/>
+                                <label th:text="${opt.options}"></label>
+                                <br>
+                            </th:block>
+                        </form>
+                    </div>
+                    <div th:case="'mcq-one'">
+                        <form>
+                            <label>
+                                <select name="selectoptions">
+                                    <th:block th:each="opt : ${question.optionsList}">
+                                        <option th:value="${opt.options}" th:text="${opt.options}">
+                                        </option>
+                                    </th:block>
+                                </select>
+                            </label>
+                        </form>
+                    </div>
+                    <div th:case="'freetext'">
+                        <form>
+                            <div>
+                                <label>
+                                    <input type="text" name="text">
+                                </label>
+                            </div>
+                        </form>
+                    </div>
+                    <div th:case="'numeric'">
+                        <form>
+                            <div>
+                                <label>
+                                    <input type="number" name="numeric">
+                                </label>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <br>
+            </li>
+            <li>
+                <form onsubmit="return confirm('Do you really want to delete this question?')"
+                      th:action="@{/questionmanager/instructorquestions/deletequestion(id=${UserID},courseid=${courseID})}"
+                      method="post">
+                    <input type="hidden" th:value="${question.ID}" name="questionid">
+                    <input type="submit" value="Delete Question">
+                </form>
+                <hr>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<script th:src="@{/styles/cssandjs/details.js}"></script>
+
+</body>
+</html>
+

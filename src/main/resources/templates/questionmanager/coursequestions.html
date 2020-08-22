@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<title>CSCI5308 - Group Formation Tool</title>
+</head>
+<body>
+	<div sec:authorize="isAuthenticated()">
+		<h4 th:inline="text">BannerID:
+			[[${#httpServletRequest.remoteUser}]]</h4>
+		<form th:action="@{/logout}" method="post">
+			<input type="submit" value="Sign Out" />
+		</form>
+	</div>
+	<a th:href="@{/course/course(id=${courseID})}">Home</a>
+	<br>
+	<a th:href="@{/questionsurvey/surveyquestions(courseid=${courseID})}">Survey Page</a>
+	<br>
+	<div class="container py-5">
+		<div class="row">
+			<ol th:each="question, i : ${questions}" style="list-style: none;">
+				<li>
+					<h2 th:text="${i.index + 1} + '. ' + ${question.text}"></h2>
+					<div th:switch="${question.type}" th:id="${i.index}">
+						<div th:case="'mcq-multiple'">
+							<form>
+								<th:block th:each="opt : ${question.optionsList}">
+									<input type="checkbox" name="${opt.options}"
+										th:value="${opt.options}" />
+									<label th:text="${opt.options}"></label>
+									<br>
+								</th:block>
+							</form>
+						</div>
+						<div th:case="'mcq-one'">
+							<form>
+								<label> <select name="selectoptions">
+										<th:block th:each="opt : ${question.optionsList}">
+											<option th:value="${opt.options}" th:text="${opt.options}">
+											</option>
+										</th:block>
+								</select>
+								</label>
+							</form>
+						</div>
+						<div th:case="'freetext'">
+							<form>
+								<div>
+									<label> <input type="text" name="text">
+									</label>
+								</div>
+							</form>
+						</div>
+						<div th:case="'numeric'">
+							<form>
+								<div>
+									<label> <input type="number" name="numeric">
+									</label>
+								</div>
+							</form>
+						</div>
+					</div> <br>
+				</li>
+				<li>
+				<div>
+					<form
+						th:action="@{/questionsurvey/coursequestions/addquestion(courseid=${courseID})}"
+						method="post">
+						<input type="hidden" th:value="${question.ID}" name="questionid">
+						<input type="submit" value="Add Question">
+					</form>
+					</div>
+					<hr>
+				</li>
+			</ol>
+		</div>
+	</div>
+</body>
+</html>
+

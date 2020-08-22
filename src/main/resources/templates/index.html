@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="https://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+>
+<head>
+    <title>CSCI5308 - Group Formation Tool</title>
+    <!-- Normalize.css by Nicolas Gallagher, used from https://necolas.github.io/normalize.css/
+         Necessary to reset some default browser styles for consistent appearance across browsers. -->
+
+    <link th:href="@{/styles/cssandjs/normalize.css}" rel="stylesheet"/>
+
+    <!-- This file includes all default styles for this application. -->
+    <link th:href="@{/styles/cssandjs/main.css}" rel="stylesheet"/>
+</head>
+
+<body class="bodyGridContainer">
+<header class="bodyGridRow headerGridContainer">
+    <h1>CSCI5308 Group Formation Tool</h1>
+</header>
+
+ <div class="mainGridCentreInfoBox" th:if="${errorMessage}">
+        <h3 class="errorInfo" th:text="${errorMessage}"></h3>
+    </div>
+
+<!-- I got the idea for how to do this from https://www.thymeleaf.org/doc/articles/springsecurity.html -->
+<div class="bodyGridRow userProfileGridContainer" sec:authorize="isAuthenticated()">
+    <h4 class="userProfileGridCol1" th:inline="text">BannerID: [[${#httpServletRequest.remoteUser}]]</h4>
+    <form class="userProfileGridCol4" th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
+</div>
+
+<main class="bodyGridRow mainGridContainer">
+    <aside class="mainGridRow welcomeInfoBox">
+        <h2>Hello, Welcome to the CSCI5308 Group Formation Tool!!</h2>
+    </aside>
+    <div class="mainGridRow" sec:authorize="isAuthenticated()">
+        <!-- Display list of courses. -->
+        <!-- Learned how to do this here: https://www.baeldung.com/thymeleaf-list -->
+        <h4>Available courses:</h4>
+        <table>
+            <tr th:each="course : ${courses}">
+                <td><a th:href="@{/course/course(id=${course.id})}" th:text="${course.title}">Title</a></td>
+            </tr>
+        </table>
+    </div>
+    <div class="mainGridCentreCard" sec:authorize="!isAuthenticated()">
+        <!-- Send them to login. -->
+        <p>This site requires you to be logged in.</p>
+    </div>
+    <a class="signupLogin mainGridRow mainGridCentreCard" sec:authorize="!isAuthenticated()" th:href="@{/login}">Click
+        here to log in!</a>
+</main>
+<footer class="bodyGridRow footerGridContainer">
+    <p><strong>CSCI5308 (Advanced Topics in Software Development)</strong> is a graduate course offered for students
+        enrolled in the <a href="https://www.dal.ca/macs" target="_blank">Master of Applied Computer Science (MACS)</a>
+        at the <a href="https://www.dal.ca/cs" target="_blank">Faculty of Computer Science</a>, <a
+                href="https://www.dal.ca" target="_blank">Dalhousie University</a>.</p>
+</footer>
+</body>
+</html>
